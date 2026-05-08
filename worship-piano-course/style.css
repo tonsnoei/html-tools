@@ -1,0 +1,980 @@
+/* ============================================
+   Piano Worship Fundamentals — style.css
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:    #0a0f1e;
+  --bg-card:    #111827;
+  --bg-card2:   #1a2236;
+  --bg-hover:   #1e2d4a;
+  --gold:       #f59e0b;
+  --gold-light: #fbbf24;
+  --blue:       #60a5fa;
+  --blue-dark:  #3b82f6;
+  --text:       #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-dim:   #6b7280;
+  --border:     #1f2d45;
+  --success:    #10b981;
+  --radius:     12px;
+  --radius-sm:  8px;
+  --shadow:     0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.6);
+  --transition: 0.2s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+/* ─── Typography ─── */
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  line-height: 1.25;
+}
+
+h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 700; }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; }
+h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 600; }
+h4 { font-size: 1.1rem; font-weight: 600; font-family: 'Inter', sans-serif; }
+
+p { margin-bottom: 1rem; color: var(--text); }
+p:last-child { margin-bottom: 0; }
+
+strong { color: var(--gold-light); font-weight: 600; }
+em { color: var(--blue); font-style: italic; }
+
+a { color: var(--blue); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--gold-light); }
+
+ul, ol { padding-left: 1.5rem; }
+li { margin-bottom: 0.4rem; }
+
+/* ─── Header / Site Nav ─── */
+.site-header {
+  background: linear-gradient(135deg, #0d1b35 0%, #111827 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 1rem;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.logo-text span {
+  display: block;
+  font-size: 0.65rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.site-nav a {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: #fff;
+  background: var(--bg-hover);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+/* ─── Progress Bar ─── */
+.progress-section {
+  background: var(--bg-card2);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+}
+
+.progress-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progress-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-deep);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue-dark), var(--gold));
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  min-width: 0;
+}
+
+.progress-pct {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Lesson-specific progress indicator */
+.lesson-progress {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.lesson-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  border: 1.5px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.lesson-dot.visited {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.lesson-dot.current {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* ─── Main Layout ─── */
+.main-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* ─── Hero (index) ─── */
+.hero {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(96,165,250,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(96,165,250,0.15);
+  color: var(--blue);
+  border: 1px solid rgba(96,165,250,0.3);
+  border-radius: 99px;
+  padding: 0.3rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 30%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 560px;
+  margin: 0 auto 2rem;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.25rem;
+}
+
+/* ─── Index Progress Card ─── */
+.index-progress-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  margin: 0 auto 3rem;
+  max-width: 800px;
+  box-shadow: var(--shadow);
+}
+
+.index-progress-card h3 {
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+/* ─── Module / Theme Headers ─── */
+.theme-header {
+  margin: 3rem 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.theme-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(96,165,250,0.1);
+  border: 1px solid rgba(96,165,250,0.25);
+  border-radius: 99px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ─── Lesson Cards (index) ─── */
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.lesson-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue-dark), var(--gold));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.lesson-card:hover {
+  border-color: rgba(96,165,250,0.4);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+.lesson-card:hover::before { opacity: 1; }
+
+.lesson-card.visited {
+  border-color: rgba(16,185,129,0.25);
+}
+
+.lesson-card.visited::before {
+  background: var(--success);
+  opacity: 0.6;
+}
+
+.lesson-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.lesson-number {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lesson-visited-badge {
+  font-size: 0.65rem;
+  background: rgba(16,185,129,0.15);
+  color: var(--success);
+  border: 1px solid rgba(16,185,129,0.3);
+  border-radius: 99px;
+  padding: 0.15rem 0.5rem;
+  font-weight: 600;
+  display: none;
+}
+
+.lesson-card.visited .lesson-visited-badge { display: inline-block; }
+
+.lesson-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.lesson-card-sub {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.lesson-card-arrow {
+  align-self: flex-end;
+  color: var(--text-dim);
+  font-size: 1rem;
+  transition: all var(--transition);
+  margin-top: 0.25rem;
+}
+
+.lesson-card:hover .lesson-card-arrow {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+/* ─── Lesson Page Layout ─── */
+.lesson-header {
+  padding: 3rem 1.5rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.lesson-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.lesson-label .theme-name {
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.lesson-title {
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.lesson-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+}
+
+.lesson-body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* ─── Learning Goals ─── */
+.leerdoelen {
+  background: linear-gradient(135deg, rgba(96,165,250,0.08), rgba(59,130,246,0.04));
+  border: 1px solid rgba(96,165,250,0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.leerdoelen h4 {
+  color: var(--blue);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.leerdoelen ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leerdoelen li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.leerdoelen li::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+/* ─── Content Sections ─── */
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  color: var(--gold-light);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.4rem;
+}
+
+.section h3 {
+  color: var(--blue);
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1.15rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.section h4 {
+  color: var(--text);
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+}
+
+/* ─── Info / Tip Boxes ─── */
+.info-box {
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.info-box-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.info-box-body { flex: 1; }
+.info-box-body p:last-child { margin-bottom: 0; }
+
+.tip-box {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-left: 4px solid var(--gold);
+}
+
+.note-box {
+  background: rgba(96,165,250,0.08);
+  border: 1px solid rgba(96,165,250,0.2);
+  border-left: 4px solid var(--blue);
+}
+
+.example-box {
+  background: rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.2);
+  border-left: 4px solid var(--success);
+}
+
+/* ─── Chord / Diagram Placeholders ─── */
+figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.diagram-placeholder {
+  background: var(--bg-card2);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 1rem;
+  margin: 0 auto;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  min-height: 140px;
+}
+
+.diagram-placeholder svg {
+  opacity: 0.5;
+}
+
+.piano-keys {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  margin: 0 auto;
+}
+
+.key-white {
+  width: 28px;
+  height: 90px;
+  background: #e5e7eb;
+  border: 1px solid #6b7280;
+  border-radius: 0 0 4px 4px;
+  position: relative;
+}
+
+.key-black {
+  width: 18px;
+  height: 56px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0 0 3px 3px;
+  margin: 0 -9px;
+  z-index: 2;
+  position: relative;
+}
+
+.key-white.active { background: var(--gold); border-color: #d97706; }
+.key-black.active { background: var(--blue-dark); border-color: var(--blue); }
+
+.key-root { background: var(--gold) !important; border-color: #d97706 !important; }
+.key-note { background: var(--blue) !important; border-color: var(--blue-dark) !important; }
+.key-note-black { background: var(--blue-dark) !important; border-color: var(--blue) !important; }
+
+figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-style: italic;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── Music notation inline ─── */
+.chord-symbol {
+  display: inline-block;
+  background: rgba(245,158,11,0.15);
+  color: var(--gold-light);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.9em;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+
+.note-name {
+  display: inline-block;
+  background: rgba(96,165,250,0.12);
+  color: var(--blue);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.9em;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Nashville numbers */
+.nashville {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--gold);
+}
+
+/* ─── Chord grid / table ─── */
+.chord-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.chord-cell {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.chord-cell .chord-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.chord-cell .chord-notes {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
+/* ─── Praktijkopdracht ─── */
+.praktijkopdracht {
+  background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(251,191,36,0.02));
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  margin-top: 3rem;
+}
+
+.praktijkopdracht-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.praktijkopdracht-icon {
+  font-size: 1.5rem;
+}
+
+.praktijkopdracht h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin: 0;
+}
+
+.praktijkopdracht h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.praktijkopdracht ul {
+  margin: 0.75rem 0;
+}
+
+.praktijkopdracht li {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.praktijkopdracht .oefentip {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(245,158,11,0.2);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─── Lesson Navigation ─── */
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: rgba(96,165,250,0.06);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(59,130,246,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59,130,246,0.45);
+  color: #fff;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #d97706, var(--gold-light));
+  color: #000;
+  box-shadow: 0 2px 12px rgba(245,158,11,0.3);
+}
+
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(245,158,11,0.45);
+  color: #000;
+}
+
+.btn-disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.lesson-nav-center {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* ─── Table styles ─── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+th {
+  background: var(--bg-card2);
+  color: var(--gold-light);
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ─── Code / Notation blocks ─── */
+.notation-block {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: var(--gold-light);
+  margin: 1rem 0;
+  overflow-x: auto;
+  line-height: 1.9;
+}
+
+.notation-block .comment {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ─── Footer ─── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.site-footer a { color: var(--text-dim); }
+.site-footer a:hover { color: var(--gold); }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0; right: 0;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.25rem;
+  }
+
+  .site-nav.open { display: flex; }
+  .site-nav a { padding: 0.6rem 1rem; }
+  .nav-toggle { display: block; }
+  .site-header { position: relative; }
+
+  .hero { padding: 2.5rem 1rem 2rem; }
+  .hero-stats { gap: 1.5rem; }
+
+  .lesson-header { padding: 2rem 1rem 1.5rem; }
+  .lesson-body { padding: 0 1rem 3rem; }
+
+  .lesson-nav { flex-direction: column; gap: 0.75rem; }
+  .lesson-nav-center { order: -1; }
+
+  .btn { width: 100%; justify-content: center; }
+
+  .lessons-grid { grid-template-columns: 1fr; }
+
+  .praktijkopdracht { padding: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .logo-text { font-size: 0.95rem; }
+  .chord-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ─── Utility classes ─── */
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }

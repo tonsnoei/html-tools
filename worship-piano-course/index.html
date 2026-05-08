@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piano Worship Fundamentals</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-index">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">
+        <span class="logo-icon">🎹</span>
+        <span class="logo-text">Piano Worship Fundamentals<span>Complete cursus</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="index.html" class="active">Overzicht</a>
+        <a href="les-01.html">Les 1</a>
+        <a href="les-07.html">Improvisatie</a>
+        <a href="les-09.html">Stijlen</a>
+        <a href="les-11.html">Band</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu openen">☰</button>
+    </div>
+  </header>
+
+  <!-- Progress bar -->
+  <div class="progress-section">
+    <div class="progress-inner">
+      <span class="progress-label" id="progress-label">0 van 12 lessen bezocht</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <span class="progress-pct" id="progress-pct">0%</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-tag">Beginnerscursus · Nederlands · 12 Lessen</div>
+    <h1>Piano Worship Fundamentals</h1>
+    <p class="hero-sub">
+      Van je eerste akkoord tot een volwaardige worshippianist — stap voor stap, in je eigen tempo, met muziek die er écht toe doet.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">12</span>
+        <span class="stat-label">Lessen</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">6</span>
+        <span class="stat-label">Thema's</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">∞</span>
+        <span class="stat-label">Inspiratie</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Index Progress Card -->
+  <div class="main-content">
+    <div class="index-progress-card">
+      <h3>Jouw voortgang</h3>
+      <div class="progress-track" style="height:12px;margin-bottom:0.75rem;">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <span id="progress-label" style="font-size:0.9rem;color:var(--text-muted);">0 van 12 lessen bezocht</span>
+        <span id="progress-pct" style="font-size:1.1rem;font-weight:700;color:var(--gold);">0%</span>
+      </div>
+      <div class="lesson-progress" style="margin-top:1rem;">
+        <div class="lesson-dot" data-lesson="1" title="Les 1"></div>
+        <div class="lesson-dot" data-lesson="2" title="Les 2"></div>
+        <div class="lesson-dot" data-lesson="3" title="Les 3"></div>
+        <div class="lesson-dot" data-lesson="4" title="Les 4"></div>
+        <div class="lesson-dot" data-lesson="5" title="Les 5"></div>
+        <div class="lesson-dot" data-lesson="6" title="Les 6"></div>
+        <div class="lesson-dot" data-lesson="7" title="Les 7"></div>
+        <div class="lesson-dot" data-lesson="8" title="Les 8"></div>
+        <div class="lesson-dot" data-lesson="9" title="Les 9"></div>
+        <div class="lesson-dot" data-lesson="10" title="Les 10"></div>
+        <div class="lesson-dot" data-lesson="11" title="Les 11"></div>
+        <div class="lesson-dot" data-lesson="12" title="Les 12"></div>
+      </div>
+      <p style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-dim);">
+        Bezoek een les om je voortgang automatisch bij te houden. Typ <code style="color:var(--gold);background:var(--bg-deep);padding:0.1rem 0.3rem;border-radius:3px;">resetProgress()</code> in de console om opnieuw te beginnen.
+      </p>
+    </div>
+
+    <!-- Thema 1 -->
+    <div class="theme-header">
+      <span class="theme-badge">📐 Thema 1</span>
+      <span style="color:var(--text-muted);font-size:0.9rem;">Muziektheorie voor worship</span>
+    </div>
+    <div class="lessons-grid">
+      <a href="les-01.html" class="lesson-card" data-lesson="1">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 01</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Intervallen & toonsoorten</div>
+        <div class="lesson-card-sub">De bouwstenen van worship — van halve toon tot kwint, en welke toonsoorten het meest klinken</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+      <a href="les-02.html" class="lesson-card" data-lesson="2">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 02</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Het Nashville Number System</div>
+        <div class="lesson-card-sub">Leer de geheimtaal van worship-muzikanten en speel mee met elke band in elke toonsoort</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Thema 2 -->
+    <div class="theme-header">
+      <span class="theme-badge">🎵 Thema 2</span>
+      <span style="color:var(--text-muted);font-size:0.9rem;">Worship chords &amp; voicings</span>
+    </div>
+    <div class="lessons-grid">
+      <a href="les-03.html" class="lesson-card" data-lesson="3">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 03</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Open voicings & sus-akkoorden</div>
+        <div class="lesson-card-sub">Geef je akkoorden meer lucht en sfeer met sus2, sus4 en open-hand voicings</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+      <a href="les-04.html" class="lesson-card" data-lesson="4">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 04</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Add9, inversies & kleurakkoorden</div>
+        <div class="lesson-card-sub">Voeg kleur en beweging toe met add9-akkoorden en leer hoe inversies je begeleiding vloeiender maken</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Thema 3 -->
+    <div class="theme-header">
+      <span class="theme-badge">🥁 Thema 3</span>
+      <span style="color:var(--text-muted);font-size:0.9rem;">Begeleiding &amp; ritmepatronen</span>
+    </div>
+    <div class="lessons-grid">
+      <a href="les-05.html" class="lesson-card" data-lesson="5">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 05</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Arpeggios & blokkakkoorden</div>
+        <div class="lesson-card-sub">De twee pijlers van worship-pianobegeleding — wanneer gebruik je welk patroon?</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+      <a href="les-06.html" class="lesson-card" data-lesson="6">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 06</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Worship groove patterns</div>
+        <div class="lesson-card-sub">Ritmische patronen die drive en energie geven — inclusief de klassieke worship-groove</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Thema 4 -->
+    <div class="theme-header">
+      <span class="theme-badge">🎼 Thema 4</span>
+      <span style="color:var(--text-muted);font-size:0.9rem;">Toonladders &amp; improvisatie</span>
+    </div>
+    <div class="lessons-grid">
+      <a href="les-07.html" class="lesson-card" data-lesson="7">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 07</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">De pentatonische toonladder & maj7-runs</div>
+        <div class="lesson-card-sub">Jouw gereedschapskist voor worship-improvisatie — altijd goed klinkende noten</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+      <a href="les-08.html" class="lesson-card" data-lesson="8">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 08</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Fills, ornamentatie & improvisatie</div>
+        <div class="lesson-card-sub">Hoe je momenten van stilte vult en muzikaal reageert op de energie in de zaal</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Thema 5 -->
+    <div class="theme-header">
+      <span class="theme-badge">🎤 Thema 5</span>
+      <span style="color:var(--text-muted);font-size:0.9rem;">Worshipstijlen</span>
+    </div>
+    <div class="lessons-grid">
+      <a href="les-09.html" class="lesson-card" data-lesson="9">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 09</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Hillsong & Bethel — pianostijlen ontleed</div>
+        <div class="lesson-card-sub">De karakteristieke aanpak van twee iconen in de moderne worship-muziek</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+      <a href="les-10.html" class="lesson-card" data-lesson="10">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 10</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Elevation & Maverick City</div>
+        <div class="lesson-card-sub">Moderne worship piano — van polished production tot rauw en ongepolijst soulvol</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Thema 6 -->
+    <div class="theme-header">
+      <span class="theme-badge">🎸 Thema 6</span>
+      <span style="color:var(--text-muted);font-size:0.9rem;">Samenspelen met een band</span>
+    </div>
+    <div class="lessons-grid">
+      <a href="les-11.html" class="lesson-card" data-lesson="11">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 11</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Frequentiebereik & ruimte laten</div>
+        <div class="lesson-card-sub">Waarom de piano niet altijd de baas is — en hoe je perfect samenspeelt met gitaar, bas en drums</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+      <a href="les-12.html" class="lesson-card" data-lesson="12">
+        <div class="lesson-meta">
+          <span class="lesson-number">Les 12</span>
+          <span class="lesson-visited-badge">✓ Bezocht</span>
+        </div>
+        <div class="lesson-card-title">Communicatie & liveperformance</div>
+        <div class="lesson-card-sub">De ongeschreven regels van het podium — signalen, dynamiek en hoe je een bandleider begrijpt</div>
+        <span class="lesson-card-arrow">→</span>
+      </a>
+    </div>
+
+    <div style="text-align:center;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);">
+      <p style="color:var(--text-dim);font-size:0.875rem;">
+        Begin bij <a href="les-01.html">Les 1</a> of klik op elke les om direct te starten.
+        Je voortgang wordt automatisch opgeslagen in je browser.
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Piano Worship Fundamentals &mdash; Een complete cursus voor de beginnende worshippianist</p>
+    <p style="margin-top:0.5rem;">Gemaakt met ❤️ voor iedereen die muziek wil maken tot eer van God</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
