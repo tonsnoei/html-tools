@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tijdregistratie</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --accent-dark: #4f46e5;
+    --accent-bg: #eef2ff;
+    --danger: #ef4444;
+    --danger-bg: #fef2f2;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: 200ms cubic-bezier(.4,0,.2,1);
+  }
+
+  [data-theme="dark"] {
+    --accent: #818cf8;
+    --accent-light: #a5b4fc;
+    --accent-dark: #6366f1;
+    --accent-bg: #1e1b4b;
+    --danger: #f87171;
+    --danger-bg: #450a0a;
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --border: #334155;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,.4), 0 2px 4px -1px rgba(0,0,0,.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.4), 0 4px 6px -2px rgba(0,0,0,.2);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.5), 0 10px 10px -5px rgba(0,0,0,.3);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    line-height: 1.5;
+  }
+
+  a, button { color: var(--accent); }
+  input, select, button { font: inherit; }
+
+  /* ─── HEADER ─── */
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .app-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--accent-dark);
+  }
+
+  .app-header .logo span { font-size: 1.4rem; }
+
+  .app-header .actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px;
+    flex: 1;
+    width: 100%;
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(99,102,241,.3);
+  }
+
+  .btn-primary:not(:disabled):hover {
+    background: var(--accent-dark);
+    box-shadow: 0 4px 12px rgba(99,102,241,.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:not(:disabled):hover {
+    background: var(--bg);
+    border-color: #cbd5e1;
+  }
+
+  .btn-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #fecaca;
+  }
+
+  .btn-danger:not(:disabled):hover { background: #fee2e2; }
+
+  .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+
+  .btn-icon {
+    padding: 6px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .btn-icon:hover { color: var(--text); }
+
+  /* ─── FORM ELEMENTS ─── */
+  input, select, .input-group {
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 8px 12px;
+  }
+
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+  .hr-input-wrapper { display: flex; align-items: center; gap: 4px; }
+  .hr-input-wrapper input { width: 80px; text-align: center; -moz-appearance: textfield; }
+  .hr-input-wrapper input::-webkit-inner-spin-button, .hr-input-wrapper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .stepper-btn {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .stepper-btn:hover { background: var(--border); }
+
+  .switch-group { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+  .switch-group input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+
+  .toggle-theme {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    line-height: 1;
+  }
+
+  .toggle-theme:hover { background: var(--border); }
+
+  /* ─── TOAST ─── */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    animation: toast-in 0.3s ease, toast-out 0.3s ease 2.7s forwards;
+    pointer-events: auto;
+    font-size: 0.9rem;
+  }
+
+  @keyframes toast-in { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes toast-out { from { opacity:1; } to { opacity:0; } }
+
+  /* ─── WEEK VIEW ─── */
+  .week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .week-nav .title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .week-nav .nav-btns {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .week-table-wrap { overflow-x: auto; }
+
+  .week-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .week-table th,
+  .week-table td {
+    border: 1px solid var(--border);
+    padding: 8px 6px;
+    text-align: center;
+    min-width: 60px;
+  }
+
+  .week-table th {
+    background: var(--surface);
+    font-weight: 600;
+  }
+
+  .week-table .project-col {
+    text-align: left;
+    min-width: 140px;
+  }
+
+  .week-table .project-col .color-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .week-table .row-total { font-weight: 600; background: var(--surface); }
+  .week-table .col-total { font-weight: 600; background: var(--surface); }
+  .week-table .grand-total { font-weight: 700; background: var(--accent); color: #fff; }
+  .week-table .archived-row { opacity: 0.5; font-style: italic; }
+  .week-table .clickable-cell { cursor: pointer; transition: background 0.1s; }
+  .week-table .clickable-cell:hover { background: var(--accent); color: #fff; }
+  .week-table .day-header { cursor: pointer; }
+  .week-table .day-header:hover { background: var(--accent); color: #fff; }
+
+  /* hide empty projects */
+  .week-table .empty-project.hidden-project { display: none; }
+
+  /* ─── DAY VIEW ─── */
+  .day-view-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .day-view-header h2 { flex:1; }
+  .entry-list { list-style: none; }
+  .entry-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .entry-item .entry-info { display: flex; align-items: center; gap: 10px; }
+  .entry-item .entry-hours { font-weight: 600; }
+  .entry-item .del-btn { color: var(--danger); cursor: pointer; background: none; border: none; font-size: 1.1rem; }
+
+  /* ─── POPOVER ─── */
+  .popover-overlay {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.3);
+    z-index:500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .popover {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-lg);
+    min-width: 260px;
+  }
+  .popover h3 { margin-bottom: 12px; }
+  .popover .pop-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.4);
+    z-index:600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    max-width: 480px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h2 { margin-bottom: 12px; }
+  .modal .form-group { margin-bottom: 12px; }
+  .modal .form-group label { display: block; margin-bottom: 4px; font-weight: 500; }
+  .modal .form-group input { width: 100%; }
+  .project-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .project-item .proj-info { display: flex; align-items: center; gap: 8px; }
+  .color-picker { display: flex; gap: 4px; flex-wrap: wrap; }
+  .color-swatch {
+    width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent; transition: border 0.1s;
+  }
+  .color-swatch.selected { border-color: var(--accent); }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state { text-align: center; padding: 40px 16px; color: var(--text-muted); }
+  .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .app-header { padding: 0 10px; }
+    .week-table { font-size: 0.8rem; }
+    .week-table th, .week-table td { padding: 4px; min-width: 40px; }
+    .project-col { min-width: 80px; }
+    .popover { min-width: 220px; }
+  }
+
+  /* ─── UTILITY ─── */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="logo"><span>⏱</span> Tijdregistratie</div>
+    <div class="actions">
+      <button class="btn btn-primary btn-sm" id="btnProjects" title="Projectbeheer">📋 Projecten</button>
+      <button class="btn btn-secondary btn-sm" id="btnExportWeek">📥 Exporteer CSV</button>
+      <button class="btn btn-secondary btn-sm" id="btnBackup">💾 Backup</button>
+      <input type="file" id="restoreInput" accept=".json" style="display:none">
+      <button class="toggle-theme" id="toggleTheme" title="Donker/Licht">🌙</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- WEEK VIEW -->
+    <div id="weekView">
+      <div class="week-nav">
+        <div class="nav-btns">
+          <button class="btn btn-sm" id="todayWeek">Deze week</button>
+          <button class="btn btn-sm btn-secondary" id="toggleEmptyProjects">Verberg lege projecten</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn btn-secondary btn-sm" id="prevWeek">◀</button>
+          <div class="title" id="weekTitle">Week</div>
+          <button class="btn btn-secondary btn-sm" id="nextWeek">▶</button>
+        </div>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <span class="switch-group">
+            <label for="replaceToggle">Vervangen</label>
+            <input type="checkbox" id="replaceToggle" checked>
+            <label for="replaceToggle">Optellen</label>
+          </span>
+        </div>
+      </div>
+      <div id="weekTableWrap" class="week-table-wrap">
+        <!-- table inserted by JS -->
+      </div>
+    </div>
+
+    <!-- DAY VIEW -->
+    <div id="dayView" class="hidden">
+      <div class="day-view-header">
+        <button class="btn btn-secondary btn-sm" id="backToWeek">⬅ Terug</button>
+        <button class="btn btn-secondary btn-sm" id="prevDay" style="display:none;">◀</button>
+        <button class="btn btn-primary btn-sm" id="todayDay" style="display:none;">Vandaag</button>
+        <h2 id="dayTitle">Dag</h2>
+        <button class="btn btn-secondary btn-sm" id="nextDay" style="display:none;">▶</button>
+      </div>
+      <div id="dayEntries"></div>
+      <div style="margin-top:12px;">
+        <h3>Nieuwe boeking</h3>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <select id="dayProjectSelect"></select>
+          <div class="hr-input-wrapper">
+            <button class="stepper-btn" id="dayMinus">−</button>
+            <input type="number" id="dayHours" value="1.00" step="0.25" min="0.25" max="24">
+            <button class="stepper-btn" id="dayPlus">+</button>
+          </div>
+          <button class="btn btn-primary btn-sm" id="daySaveEntry">Opslaan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- MODAL PROJECTS (hidden) -->
+  <div id="projectModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2>Projectbeheer</h2>
+      <div class="form-group">
+        <label>Nieuw project</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="newProjectName" placeholder="Projectnaam" style="flex:1;">
+          <button class="btn btn-primary" id="addProjectBtn">Toevoegen</button>
+        </div>
+      </div>
+      <div id="projectList"></div>
+      <div style="margin-top:12px; text-align:right;">
+        <button class="btn btn-secondary" id="closeProjectModal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPOVER (hidden) -->
+  <div id="popoverOverlay" class="popover-overlay hidden">
+    <div class="popover">
+      <h3 id="popTitle">Wijzig uren</h3>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="stepper-btn" id="popMinus">−</button>
+        <input type="number" id="popHours" step="0.25" min="0.25" max="24" style="width:80px; text-align:center;">
+        <button class="stepper-btn" id="popPlus">+</button>
+      </div>
+      <div class="pop-actions">
+        <button class="btn btn-primary btn-sm" id="popSave">Opslaan</button>
+        <button class="btn btn-danger btn-sm" id="popDelete">Verwijderen</button>
+        <button class="btn btn-secondary btn-sm" id="popCancel">Annuleren</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /* ─── CONFIG ─── */
+  const DB_NAME = 'TimeTracker';
+  const DB_VER = 1;
+  const COLORS = ['#e74c3c','#e67e22','#f1c40f','#2ecc71','#1abc9c','#3498db','#9b59b6','#34495e','#95a5a9'];
+
+  /* ─── STATE ─── */
+  let db = null;
+  let currentYear = 0, currentWeek = 0;
+  let currentDay = null; // YYYY-MM-DD when in day view
+  let popContext = null; // { projectId, date } for current popover
+  let projects = [];    // { id, name, color, archived }
+  let hideEmptyProjects = false; // toggle for hiding empty project rows
+  let isNarrow = false; // responsive narrow mode
+
+  /* ─── UTILITY ─── */
+  function pad(n){ return n<10?'0'+n:''+n; }
+  function fmtDate(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function parseDate(s){ const [y,m,d]=s.split('-'); return new Date(+y,+m-1,+d); }
+  function isoWeek(d) {
+    const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = dt.getUTCDay() || 7; // 1..7
+    dt.setUTCDate(dt.getUTCDate() + 4 - dayNum);
+    const year = dt.getUTCFullYear();
+    const first = new Date(Date.UTC(year, 0, 4));
+    const week = Math.ceil((((dt - first) / 86400000) + first.getUTCDay() + 1) / 7);
+    return { year, week };
+  }
+  function weekStart(year, week) {
+    const first = new Date(Date.UTC(year, 0, 4));
+    const diff = (week - 1) * 7 + 1 - first.getUTCDay(); // Monday
+    return new Date(Date.UTC(year, 0, 4 + diff));
+  }
+
+  /* ─── TOAST ─── */
+  function toast(msg) {
+    const c = document.getElementById('toastContainer');
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.textContent = msg;
+    c.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+
+  /* ─── INDEXEDDB ─── */
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VER);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('projects')) {
+          const ps = db.createObjectStore('projects', { keyPath: 'id', autoIncrement: true });
+          ps.createIndex('by_name','name',{unique:false});
+        }
+        if (!db.objectStoreNames.contains('entries')) {
+          const es = db.createObjectStore('entries', { keyPath: 'id', autoIncrement: true });
+          es.createIndex('by_date','date',{unique:false});
+          es.createIndex('by_project','projectId',{unique:false});
+          es.createIndex('by_date_project',['date','projectId'],{unique:true});
+        }
+      };
+      req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+      req.onerror = (e) => reject(e.target.error);
+    });
+  }
+
+  function dbAll(storeName) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName,'readonly');
+      const s = tx.objectStore(storeName);
+      const req = s.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  function dbPut(storeName, obj) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName,'readwrite');
+      const s = tx.objectStore(storeName);
+      const req = s.put(obj);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  function dbDelete(storeName, id) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName,'readwrite');
+      const s = tx.objectStore(storeName);
+      const req = s.delete(id);
+      req.onsuccess = () => resolve();
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  function dbGetByIndex(storeName, indexName, value) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName,'readonly');
+      const s = tx.objectStore(storeName);
+      const idx = s.index(indexName);
+      const req = idx.getAll(value);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  function dbGetByCompound(storeName, indexName, value) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName,'readonly');
+      const s = tx.objectStore(storeName);
+      const idx = s.index(indexName);
+      const req = idx.getAll(value);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  function dbClear(storeName) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName,'readwrite');
+      const s = tx.objectStore(storeName);
+      const req = s.clear();
+      req.onsuccess = () => resolve();
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  /* ─── PROJECT HELPERS ─── */
+  async function loadProjects() {
+    projects = await dbAll('projects');
+  }
+
+  async function getProjectName(id) {
+    const p = projects.find(x => x.id === id);
+    return p ? p.name : 'Onbekend';
+  }
+
+  async function getProjectColor(id) {
+    const p = projects.find(x => x.id === id);
+    return p ? p.color : '#95a5a9';
+  }
+
+  /* ─── ENTRIES ─── */
+  async function getEntry(date, projectId) {
+    const list = await dbGetByCompound('entries','by_date_project',[date,projectId]);
+    return list.length ? list[0] : null;
+  }
+
+  async function getEntriesForDate(date) {
+    return await dbGetByIndex('entries','by_date',date);
+  }
+
+  async function getEntriesForWeek(year, week) {
+    const start = weekStart(year, week);
+    const dates = [];
+    for (let i=0; i<7; i++) {
+      const d = new Date(start);
+      d.setDate(d.getDate() + i);
+      dates.push(fmtDate(d));
+    }
+    const all = [];
+    for (const date of dates) {
+      const entries = await getEntriesForDate(date);
+      all.push(...entries);
+    }
+    return all;
+  }
+
+  /* ─── RENDER WEEK ─── */
+  async function renderWeek(year, week) {
+    currentYear = year;
+    currentWeek = week;
+    const start = weekStart(year, week);
+    const dates = [];
+    const dayNames = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
+    for (let i=0; i<7; i++) {
+      const d = new Date(start);
+      d.setDate(d.getDate() + i);
+      dates.push(fmtDate(d));
+    }
+    const entries = await getEntriesForWeek(year, week);
+    // Build map { 'date_projectId': hours }
+    const map = {};
+    for (const e of entries) {
+      const key = e.date + '_' + e.projectId;
+      map[key] = e.hours;
+    }
+    // Project list (include archived)
+    const projList = projects.slice().sort((a,b) => a.name.localeCompare(b.name));
+    // Calculate totals
+    const projTotals = {};
+    const dayTotals = dates.map(()=>0);
+    for (const p of projList) {
+      let sum = 0;
+      for (let di=0; di<7; di++) {
+        const key = dates[di] + '_' + p.id;
+        const h = map[key] || 0;
+        sum += h;
+        dayTotals[di] += h;
+        if (!projTotals[p.id]) projTotals[p.id] = 0;
+      }
+      projTotals[p.id] = sum;
+    }
+    const grandTotal = dayTotals.reduce((a,b)=>a+b,0);
+
+    // Build HTML table
+    let html = '<table class="week-table"><thead><tr><th>Project</th>';
+    for (let di=0; di<7; di++) {
+      const d = new Date(start);
+      d.setDate(d.getDate() + di);
+      const label = dayNames[di] + ' ' + d.getDate();
+      html += `<th class="day-header" data-date="${dates[di]}">${label}</th>`;
+    }
+    html += '<th>Totaal</th></tr></thead><tbody>';
+
+    for (const p of projList) {
+      const color = p.color || '#95a5a9';
+      const archClass = p.archived ? 'archived-row' : '';
+      const total = projTotals[p.id] || 0;
+      const emptyClass = total === 0 ? 'empty-project' : '';
+      html += `<tr class="${archClass} ${emptyClass}" data-project="${p.id}">`;
+      html += `<td class="project-col"><span class="color-dot" style="background:${color}"></span>${p.name}</td>`;
+      for (let di=0; di<7; di++) {
+        const key = dates[di] + '_' + p.id;
+        const h = map[key] || 0;
+        const display = h ? h.toFixed(2) : '';
+        html += `<td class="clickable-cell" data-date="${dates[di]}" data-project="${p.id}">${display}</td>`;
+      }
+      html += `<td class="row-total">${total.toFixed(2)}</td>`;
+      html += '</tr>';
+    }
+
+    // Totals row
+    html += '<tr><td><strong>Totaal</strong></td>';
+    for (let di=0; di<7; di++) {
+      html += `<td class="col-total">${dayTotals[di].toFixed(2)}</td>`;
+    }
+    html += `<td class="grand-total">${grandTotal.toFixed(2)}</td></tr>`;
+    html += '</tbody></table>';
+
+    document.getElementById('weekTableWrap').innerHTML = html;
+
+    // Week title
+    const endDate = new Date(start); endDate.setDate(endDate.getDate()+6);
+    const options = { day:'numeric', month:'long', year:'numeric' };
+    const labelStart = start.toLocaleDateString('nl-NL',options);
+    const labelEnd = endDate.toLocaleDateString('nl-NL',options);
+    document.getElementById('weekTitle').textContent = `Week ${week} · ${labelStart} – ${labelEnd}`;
+
+    // Attach event listeners for cell clicks and day headers
+    document.querySelectorAll('.clickable-cell').forEach(cell => {
+      cell.addEventListener('click', (e) => {
+        const date = cell.dataset.date;
+        const projectId = parseInt(cell.dataset.project);
+        openPopover(date, projectId);
+      });
+    });
+    document.querySelectorAll('.day-header').forEach(th => {
+      th.addEventListener('click', (e) => {
+        const date = th.dataset.date;
+        openDayView(date);
+      });
+    });
+
+    // Apply empty project filter
+    applyEmptyFilter();
+  }
+
+  /* ─── EMPTY PROJECT FILTER ─── */
+  function applyEmptyFilter() {
+    const rows = document.querySelectorAll('.week-table .empty-project');
+    rows.forEach(row => {
+      row.classList.toggle('hidden-project', hideEmptyProjects);
+    });
+    const btn = document.getElementById('toggleEmptyProjects');
+    btn.textContent = hideEmptyProjects ? 'Toon alle projecten' : 'Verberg lege projecten';
+  }
+
+  /* ─── POPOVER ─── */
+  async function openPopover(date, projectId) {
+    const entry = await getEntry(date, projectId);
+    const hours = entry ? entry.hours : 0;
+    popContext = { date, projectId, entryId: entry ? entry.id : null };
+    document.getElementById('popHours').value = hours.toFixed(2);
+    const proj = projects.find(p => p.id === projectId);
+    document.getElementById('popTitle').textContent = (proj ? proj.name : 'Project') + ' op ' + date;
+    document.getElementById('popoverOverlay').classList.remove('hidden');
+  }
+
+  async function popoverSave() {
+    if (!popContext) return;
+    const h = parseFloat(document.getElementById('popHours').value);
+    if (isNaN(h) || h < 0.25) { toast('Voer minimaal 0,25 uur in.'); return; }
+    const clamped = Math.min(h, 24);
+    const entry = {
+      projectId: popContext.projectId,
+      date: popContext.date,
+      hours: clamped
+    };
+    if (popContext.entryId) entry.id = popContext.entryId;
+    await dbPut('entries', entry);
+    toast('Opgeslagen');
+    closePopover();
+    await renderWeek(currentYear, currentWeek);
+    if (!document.getElementById('weekView').classList.contains('hidden')) return;
+    // if day view open, refresh
+    if (currentDay) await renderDay(currentDay);
+  }
+
+  async function popoverDelete() {
+    if (!popContext || !popContext.entryId) { toast('Geen boeking om te verwijderen.'); return; }
+    await dbDelete('entries', popContext.entryId);
+    toast('Verwijderd');
+    closePopover();
+    await renderWeek(currentYear, currentWeek);
+    if (currentDay) await renderDay(currentDay);
+  }
+
+  function closePopover() {
+    popContext = null;
+    document.getElementById('popoverOverlay').classList.add('hidden');
+  }
+
+  /* ─── DAY VIEW ─── */
+  async function openDayView(date) {
+    currentDay = date;
+    document.getElementById('weekView').classList.add('hidden');
+    document.getElementById('dayView').classList.remove('hidden');
+    await renderDay(date);
+  }
+
+  async function renderDay(date) {
+    const d = parseDate(date);
+    const options = { weekday:'long', day:'numeric', month:'long', year:'numeric' };
+    document.getElementById('dayTitle').textContent = d.toLocaleDateString('nl-NL', options);
+    const entries = await getEntriesForDate(date);
+    // sort by project name
+    const withProj = [];
+    for (const e of entries) {
+      const proj = projects.find(p => p.id === e.projectId);
+      withProj.push({ ...e, projName: proj ? proj.name : 'Onbekend', projColor: proj ? proj.color : '#95a5a9' });
+    }
+    withProj.sort((a,b) => a.projName.localeCompare(b.projName));
+    let html = '<ul class="entry-list">';
+    if (withProj.length === 0) {
+      html += '<li class="empty-state">Geen boekingen op deze dag.</li>';
+    } else {
+      for (const e of withProj) {
+        html += `<li class="entry-item">
+          <div class="entry-info">
+            <span class="color-dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${e.projColor}"></span>
+            <span>${e.projName}</span>
+            <span class="entry-hours">${e.hours.toFixed(2)} uur</span>
+          </div>
+          <button class="del-btn" data-entry-id="${e.id}">✕</button>
+        </li>`;
+      }
+    }
+    html += '</ul>';
+    document.getElementById('dayEntries').innerHTML = html;
+    // attach delete handler
+    document.querySelectorAll('.del-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = parseInt(btn.dataset.entryId);
+        await dbDelete('entries', id);
+        toast('Verwijderd');
+        await renderDay(date);
+      });
+    });
+    // populate project select (only non-archived)
+    const sel = document.getElementById('dayProjectSelect');
+    sel.innerHTML = '<option value="">-- Kies project --</option>';
+    for (const p of projects.filter(p => !p.archived).sort((a,b)=>a.name.localeCompare(b.name))) {
+      sel.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+    }
+  }
+
+  /* ─── NAVIGATION ─── */
+  function prevWeekAction() {
+    const start = weekStart(currentYear, currentWeek);
+    start.setDate(start.getDate() - 7);
+    const { year, week } = isoWeek(start);
+    renderWeek(year, week);
+  }
+  function nextWeekAction() {
+    const start = weekStart(currentYear, currentWeek);
+    start.setDate(start.getDate() + 7);
+    const { year, week } = isoWeek(start);
+    renderWeek(year, week);
+  }
+  function todayWeekAction() {
+    const now = new Date();
+    const { year, week } = isoWeek(now);
+    renderWeek(year, week);
+  }
+
+  /* ─── DAY NAVIGATION (responsive) ─── */
+  function prevDayAction() {
+    if (!currentDay) return;
+    const d = parseDate(currentDay);
+    d.setDate(d.getDate() - 1);
+    openDayView(fmtDate(d));
+  }
+  function nextDayAction() {
+    if (!currentDay) return;
+    const d = parseDate(currentDay);
+    d.setDate(d.getDate() + 1);
+    openDayView(fmtDate(d));
+  }
+  function todayDayAction() {
+    const now = new Date();
+    openDayView(fmtDate(now));
+  }
+
+  /* ─── RESPONSIVE MODE ─── */
+  function isNarrowScreen() {
+    return window.innerWidth <= 640;
+  }
+
+  function updateViewMode() {
+    const backBtn = document.getElementById('backToWeek');
+    const prevDayBtn = document.getElementById('prevDay');
+    const nextDayBtn = document.getElementById('nextDay');
+    const todayDayBtn = document.getElementById('todayDay');
+
+    if (isNarrow) {
+      // show day navigation, hide back button
+      backBtn.style.display = 'none';
+      prevDayBtn.style.display = '';
+      nextDayBtn.style.display = '';
+      todayDayBtn.style.display = '';
+
+      // if currently in week view, switch to day view
+      if (!document.getElementById('weekView').classList.contains('hidden')) {
+        const monday = weekStart(currentYear, currentWeek);
+        openDayView(fmtDate(monday));
+      }
+    } else {
+      // show back button, hide day navigation
+      backBtn.style.display = '';
+      prevDayBtn.style.display = 'none';
+      nextDayBtn.style.display = 'none';
+      todayDayBtn.style.display = 'none';
+
+      // if currently in day view, switch to week view
+      if (!document.getElementById('dayView').classList.contains('hidden')) {
+        if (currentDay) {
+          const d = parseDate(currentDay);
+          const { year, week } = isoWeek(d);
+          currentYear = year;
+          currentWeek = week;
+        }
+        document.getElementById('dayView').classList.add('hidden');
+        document.getElementById('weekView').classList.remove('hidden');
+        renderWeek(currentYear, currentWeek);
+      }
+    }
+  }
+
+  function handleResize() {
+    const narrow = isNarrowScreen();
+    if (narrow === isNarrow) return;
+    isNarrow = narrow;
+    updateViewMode();
+  }
+
+  /* ─── EXPORT CSV ─── */
+  async function exportWeekCSV() {
+    const start = weekStart(currentYear, currentWeek);
+    const dates = [];
+    for (let i=0; i<7; i++) {
+      const d = new Date(start); d.setDate(d.getDate() + i);
+      dates.push(fmtDate(d));
+    }
+    const entries = await getEntriesForWeek(currentYear, currentWeek);
+    const map = {};
+    for (const e of entries) {
+      const key = e.date + '_' + e.projectId;
+      map[key] = e.hours;
+    }
+    const dayLabels = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
+    const lines = [['Project', ...dayLabels, 'Totaal'].join(';')];
+    for (const p of projects.slice().sort((a,b)=>a.name.localeCompare(b.name))) {
+      const row = [p.name];
+      let total = 0;
+      for (let di=0; di<7; di++) {
+        const key = dates[di] + '_' + p.id;
+        const h = map[key] || 0;
+        row.push(h.toFixed(2));
+        total += h;
+      }
+      row.push(total.toFixed(2));
+      lines.push(row.join(';'));
+    }
+    const csv = lines.join('\n');
+    const blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `uren_week${currentWeek}_${currentYear}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('CSV geëxporteerd');
+  }
+
+  /* ─── PROJECT MODAL ─── */
+  function openProjectModal() {
+    document.getElementById('projectModal').classList.remove('hidden');
+    renderProjectList();
+  }
+
+  function closeProjectModal() {
+    document.getElementById('projectModal').classList.add('hidden');
+  }
+
+  async function renderProjectList() {
+    const list = document.getElementById('projectList');
+    list.innerHTML = '';
+    for (const p of projects.sort((a,b)=>a.name.localeCompare(b.name))) {
+      const div = document.createElement('div');
+      div.className = 'project-item';
+      const color = p.color || '#95a5a9';
+      div.innerHTML = `
+        <div class="proj-info">
+          <span class="color-dot" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${color}"></span>
+          <span>${p.name} ${p.archived ? '(gearchiveerd)' : ''}</span>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <input type="text" class="rename-input" value="${p.name}" style="width:auto;max-width:120px;padding:2px 6px;font-size:0.85rem;" data-id="${p.id}">
+          <button class="btn btn-sm btn-secondary rename-btn" data-id="${p.id}">Hernoem</button>
+          <button class="btn btn-sm ${p.archived?'btn-primary':'btn-secondary'} archive-btn" data-id="${p.id}">${p.archived?'Activeren':'Archiveren'}</button>
+          <button class="btn btn-sm btn-icon color-btn" data-id="${p.id}" style="padding:2px 6px;">🎨</button>
+        </div>`;
+      list.appendChild(div);
+    }
+    // Attach events
+    document.querySelectorAll('.rename-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = parseInt(btn.dataset.id);
+        const inp = btn.parentElement.querySelector('.rename-input');
+        const newName = inp.value.trim();
+        if (!newName) { toast('Naam mag niet leeg zijn.'); return; }
+        const p = projects.find(x => x.id === id);
+        if (p) { p.name = newName; await dbPut('projects', p); toast('Hernoemd'); renderProjectList(); }
+      });
+    });
+    document.querySelectorAll('.archive-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = parseInt(btn.dataset.id);
+        const p = projects.find(x => x.id === id);
+        if (p) { p.archived = !p.archived; await dbPut('projects', p); toast(p.archived?'Gearchiveerd':'Geactiveerd'); renderProjectList(); renderWeek(currentYear, currentWeek); }
+      });
+    });
+    document.querySelectorAll('.color-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        // simple palette
+        const current = projects.find(x=>x.id===id).color;
+        const palette = document.createElement('div');
+        palette.className = 'color-picker';
+        palette.style.position = 'absolute'; // will place near button
+        COLORS.forEach(c => {
+          const swatch = document.createElement('div');
+          swatch.className = 'color-swatch';
+          swatch.style.background = c;
+          if (c === current) swatch.classList.add('selected');
+          swatch.addEventListener('click', async () => {
+            const p = projects.find(x=>x.id===id);
+            if (p) { p.color = c; await dbPut('projects', p); toast('Kleur gewijzigd'); renderProjectList(); renderWeek(currentYear, currentWeek); }
+            palette.remove();
+          });
+          palette.appendChild(swatch);
+        });
+        // place palette below button
+        btn.parentNode.appendChild(palette);
+        // remove after selection or click elsewhere
+        const close = (e) => { if (!palette.contains(e.target) && e.target !== btn) { palette.remove(); document.removeEventListener('click', close); } };
+        setTimeout(() => document.addEventListener('click', close), 0);
+      });
+    });
+  }
+
+  async function addNewProject() {
+    const name = document.getElementById('newProjectName').value.trim();
+    if (!name) { toast('Voer een projectnaam in.'); return; }
+    // check duplicate
+    if (projects.some(p => p.name.toLowerCase() === name.toLowerCase())) { toast('Project bestaat al.'); return; }
+    const proj = { name, color: COLORS[Math.floor(Math.random()*COLORS.length)], archived: false };
+    await dbPut('projects', proj);
+    await loadProjects();
+    document.getElementById('newProjectName').value = '';
+    toast('Project toegevoegd');
+    renderProjectList();
+    renderWeek(currentYear, currentWeek);
+  }
+
+  /* ─── DAY SAVE ENTRY ─── */
+  async function saveDayEntry() {
+    const date = currentDay;
+    const projectId = parseInt(document.getElementById('dayProjectSelect').value);
+    if (!projectId) { toast('Kies een project.'); return; }
+    const hours = parseFloat(document.getElementById('dayHours').value);
+    if (isNaN(hours) || hours < 0.25) { toast('Voer minimaal 0,25 uur in.'); return; }
+    const clamped = Math.min(hours, 24);
+    const replace = document.getElementById('replaceToggle').checked;
+    let entry = await getEntry(date, projectId);
+    if (entry) {
+      if (replace) {
+        entry.hours = clamped;
+      } else {
+        entry.hours += clamped;
+        if (entry.hours > 24) entry.hours = 24;
+      }
+    } else {
+      entry = { date, projectId, hours: clamped };
+    }
+    await dbPut('entries', entry);
+    toast('Opgeslagen');
+    await renderDay(date);
+  }
+
+  /* ─── BACKUP / RESTORE ─── */
+  async function backupData() {
+    const data = {
+      projects: await dbAll('projects'),
+      entries: await dbAll('entries')
+    };
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tijdregistratie_backup.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Backup gedownload');
+  }
+
+  async function restoreData(file) {
+    const text = await file.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch(e) { toast('Ongeldig JSON-bestand.'); return; }
+    if (!data.projects || !data.entries) { toast('Ongeldig backup-formaat.'); return; }
+    // clear existing
+    await dbClear('projects');
+    await dbClear('entries');
+    // restore projects
+    for (const p of data.projects) {
+      await dbPut('projects', p);
+    }
+    for (const e of data.entries) {
+      await dbPut('entries', e);
+    }
+    await loadProjects();
+    toast('Data teruggezet');
+    todayWeekAction();
+  }
+
+  /* ─── INIT ─── */
+  async function init() {
+    await openDB();
+    await loadProjects();
+    // seed default project if empty
+    if (projects.length === 0) {
+      const def = { name: 'Algemeen', color: COLORS[0], archived: false };
+      await dbPut('projects', def);
+      await loadProjects();
+    }
+    const now = new Date();
+    const wk = isoWeek(now);
+    await renderWeek(wk.year, wk.week);
+
+    // theme
+    const themeToggle = document.getElementById('toggleTheme');
+    let dark = localStorage.getItem('dark') === 'true';
+    if (dark) document.documentElement.setAttribute('data-theme','dark');
+    themeToggle.textContent = dark ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      dark = !dark;
+      document.documentElement.setAttribute('data-theme', dark?'dark':'light');
+      themeToggle.textContent = dark ? '☀️' : '🌙';
+      localStorage.setItem('dark', dark);
+    });
+
+    // Event listeners
+    document.getElementById('prevWeek').addEventListener('click', prevWeekAction);
+    document.getElementById('nextWeek').addEventListener('click', nextWeekAction);
+    document.getElementById('todayWeek').addEventListener('click', todayWeekAction);
+    document.getElementById('toggleEmptyProjects').addEventListener('click', () => {
+      hideEmptyProjects = !hideEmptyProjects;
+      applyEmptyFilter();
+    });
+    document.getElementById('btnProjects').addEventListener('click', openProjectModal);
+    document.getElementById('closeProjectModal').addEventListener('click', closeProjectModal);
+    document.getElementById('addProjectBtn').addEventListener('click', addNewProject);
+    document.getElementById('btnExportWeek').addEventListener('click', exportWeekCSV);
+    document.getElementById('btnBackup').addEventListener('click', backupData);
+    document.getElementById('restoreInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) restoreData(file);
+      e.target.value = '';
+    });
+    // backup button also triggers restore via hidden input
+    document.getElementById('btnBackup').addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      document.getElementById('restoreInput').click();
+    });
+    // also add a separate button? We'll add a small note: right-click for restore.
+    // Better: create a dropdown? Let's make a small secondary button.
+    // Add a small hidden button? We'll just have a small 'Restore' button inside actions header.
+    // Let's add a button dynamically:
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'btn btn-secondary btn-sm';
+    restoreBtn.textContent = '📂 Herstellen';
+    restoreBtn.addEventListener('click', () => document.getElementById('restoreInput').click());
+    document.querySelector('.app-header .actions').insertBefore(restoreBtn, document.getElementById('toggleTheme'));
+
+    // popover
+    document.getElementById('popSave').addEventListener('click', popoverSave);
+    document.getElementById('popDelete').addEventListener('click', popoverDelete);
+    document.getElementById('popCancel').addEventListener('click', closePopover);
+    document.getElementById('popMinus').addEventListener('click', () => {
+      const inp = document.getElementById('popHours');
+      let v = parseFloat(inp.value) || 0;
+      v = Math.round((v - 0.25) * 100) / 100;
+      if (v < 0.25) v = 0.25;
+      inp.value = v.toFixed(2);
+    });
+    document.getElementById('popPlus').addEventListener('click', () => {
+      const inp = document.getElementById('popHours');
+      let v = parseFloat(inp.value) || 0;
+      v = Math.round((v + 0.25) * 100) / 100;
+      if (v > 24) v = 24;
+      inp.value = v.toFixed(2);
+    });
+
+    // day view
+    document.getElementById('backToWeek').addEventListener('click', () => {
+      document.getElementById('dayView').classList.add('hidden');
+      document.getElementById('weekView').classList.remove('hidden');
+      currentDay = null;
+    });
+    document.getElementById('daySaveEntry').addEventListener('click', saveDayEntry);
+    document.getElementById('dayMinus').addEventListener('click', () => {
+      const inp = document.getElementById('dayHours');
+      let v = parseFloat(inp.value) || 0;
+      v = Math.round((v - 0.25) * 100) / 100;
+      if (v < 0.25) v = 0.25;
+      inp.value = v.toFixed(2);
+    });
+    document.getElementById('dayPlus').addEventListener('click', () => {
+      const inp = document.getElementById('dayHours');
+      let v = parseFloat(inp.value) || 0;
+      v = Math.round((v + 0.25) * 100) / 100;
+      if (v > 24) v = 24;
+      inp.value = v.toFixed(2);
+    });
+
+    // day navigation (responsive)
+    document.getElementById('prevDay').addEventListener('click', prevDayAction);
+    document.getElementById('nextDay').addEventListener('click', nextDayAction);
+    document.getElementById('todayDay').addEventListener('click', todayDayAction);
+
+    // close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+      el.addEventListener('click', (e) => {
+        if (e.target === el) el.classList.add('hidden');
+      });
+    });
+    document.getElementById('popoverOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('popoverOverlay')) closePopover();
+    });
+
+    // responsive mode
+    window.addEventListener('resize', handleResize);
+    // initial check
+    isNarrow = isNarrowScreen();
+    updateViewMode();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
