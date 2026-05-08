@@ -8,9 +8,9 @@ A collection of fully client-side web tools that run entirely in your browser. N
 
 ### Office
 
-- **[Facebook (Smoelenboek)](https://tonsnoei.github.io/html-tools/facebook/)** — Employee directory. Add, edit, and search colleagues with photos, roles, departments, and contact info. Auto-generated avatars, department filtering, JSON import/export.
+- **[Facebook](https://tonsnoei.github.io/html-tools/facebook/)** — Employee directory. Add, edit, and search colleagues with photos, roles, departments, and contact info. Auto-generated avatars, department filtering, JSON import/export.
 
-- **[Time Registration (Tijdregistratie)](https://tonsnoei.github.io/html-tools/time-registration/)** — Weekly/daily time tracking per project. Add/edit/delete entries, manage projects with color-coding, CSV export, backup/restore, dark mode. 
+- **[Time Registration](https://tonsnoei.github.io/html-tools/time-registration/)** — Weekly/daily time tracking per project. Add/edit/delete entries, manage projects with color-coding, CSV export, backup/restore, dark mode. 
 
 ### File Comparison & Management
 
